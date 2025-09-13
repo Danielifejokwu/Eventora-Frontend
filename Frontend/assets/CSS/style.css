@@ -216,3 +216,164 @@ footer {
 .form-footer a:hover {
   text-decoration: underline;
 }
+
+/* Ensure body fills viewport */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main area grows to fill space between header & footer */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #F8F9FA;
+  padding: 2rem 1rem;
+}
+
+/* Form card styles (unchanged) */
+.form-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+/* ===== Dashboard Layout ===== */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #0B1E3D;
+  color: white;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 1.2rem;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #ddd;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: color 0.3s ease;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  color: #2CB1A6;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background: #F8F9FA;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h2 {
+  color: #0B1E3D;
+}
+
+/* Events Grid */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.event-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+}
+
+.event-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.event-info {
+  padding: 1rem;
+}
+
+.event-info h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #0B1E3D;
+}
+
+.event-info p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.4rem;
+}
+
+.event-price {
+  font-weight: 700;
+  color: #FF6B6B;
+}
+
+.event-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+/* Buttons for actions */
+.btn-secondary {
+  background: #E5E7EB;
+  color: #0B1E3D;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  background: #d1d5db;
+}
