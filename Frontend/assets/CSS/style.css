@@ -377,3 +377,138 @@ main {
 .btn-secondary:hover {
   background: #d1d5db;
 }
+
+
+/* ===== Event Details Page ===== */
+.event-details {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.event-banner img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.event-details-info {
+  padding: 1.5rem;
+}
+
+.event-details-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #0B1E3D;
+}
+
+.event-meta {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.event-description {
+  margin: 1rem 0;
+  line-height: 1.5;
+  color: #333;
+}
+
+.event-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FF6B6B;
+  margin-bottom: 1rem;
+}
+
+.event-detail-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ===== Bookings Page ===== */
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.booking-info h3 {
+  font-size: 1.2rem;
+  color: #0B1E3D;
+}
+
+.status {
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.status.paid {
+  background: #c3f0ca;
+  color: #187d2d;
+}
+
+.status.reserved {
+  background: #ffe6a1;
+  color: #946200;
+}
+
+.booking-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ===== Reminders Page ===== */
+.reminders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reminder-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.reminder-info h3 {
+  font-size: 1.2rem;
+  color: #0B1E3D;
+}
+
+.status.pending {
+  background: #ffe6a1;
+  color: #946200;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.status.sent {
+  background: #c3f0ca;
+  color: #187d2d;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.reminder-actions {
+  display: flex;
+  gap: 0.5rem;
+}
