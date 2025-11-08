@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Event Details - Eventora</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo">Eventora</div>
+      <ul>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="reminders.html">Reminders</a></li>
+        <li><a href="bookings.html">Bookings</a></li>
+        <li><a href="login.html">Logout</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <div id="eventArea">
+        <h2 id="title">Loading...</h2>
+
+        <div id="details">
+          <p id="dates"></p>
+          <p id="location"></p>
+          <p id="price"></p>
+          <p id="desc"></p>
+        </div>
+
+        <hr />
+
+        <h3>Edit Event</h3>
+        <form id="editForm">
+          <label>Title<br /><input type="text" id="inputTitle" /></label><br/>
+          <label>Start Date (ISO)<br /><input type="text" id="inputStart" placeholder="2025-10-20T10:00:00Z" /></label><br/>
+          <label>End Date (ISO)<br /><input type="text" id="inputEnd" placeholder="2025-10-22T18:00:00Z" /></label><br/>
+          <label>Location<br /><input type="text" id="inputLocation" /></label><br/>
+          <label>Price<br /><input type="number" id="inputPrice" /></label><br/>
+          <label>Description<br /><textarea id="inputDesc"></textarea></label><br/>
+          <button id="saveBtn" type="button">Save Changes</button>
+          <button id="deleteBtn" type="button" style="margin-left:10px;background:#d9534f;color:#fff;">Delete Event</button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const API_BASE = "http://localhost:5000/api";
+    const id = new URLSearchParams(window.location.search).get("id") || localStorage.getItem("selectedEventId");
+    if (!id) {
+      alert("No event selected");
+      window.location.href = "events.html";
+    }
+
+    async function fetchEvent() {
+      try {
+        const res = await fetch(`${API_BASE}/events/${id}`);
+        if (!res.ok) throw new Error("Failed to load event");
+        const ev = await res.json();
+
+        document.getElementById("title").innerText = ev.title || "";
+        document.getElementById("dates").innerText = (new Date(ev.startDate)).toLocaleString() + " - " + (new Date(ev.endDate)).toLocaleString();
+        document.getElementById("location").innerText = "📍 " + (ev.location || "");
+        document.getElementById("price").innerText = "💰 $" + (ev.price ?? 0);
+        document.getElementById("desc").innerText = ev.description || "";
+
+        // populate edit form
+        document.getElementById("inputTitle").value = ev.title || "";
+        document.getElementById("inputStart").value = ev.startDate || "";
+        document.getElementById("inputEnd").value = ev.endDate || "";
+        document.getElementById("inputLocation").value = ev.location || "";
+        document.getElementById("inputPrice").value = ev.price ?? 0;
+        document.getElementById("inputDesc").value = ev.description || "";
+      } catch (err) {
+        console.error(err);
+        alert("Cannot load event.");
+      }
+    }
+
+    // Save (PUT)
+    document.getElementById("saveBtn").addEventListener("click", async () => {
+      const payload = {
+        title: document.getElementById("inputTitle").value,
+        startDate: document.getElementById("inputStart").value,
+        endDate: document.getElementById("inputEnd").value,
+        location: document.getElementById("inputLocation").value,
+        price: Number(document.getElementById("inputPrice").value),
+        description: document.getElementById("inputDesc").value
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/events/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Update failed");
+        alert("Event updated");
+        fetchEvent();
+        // also update events.html list when user returns (simple approach: reload)
+      } catch (err) {
+        console.error(err);
+        alert("Update failed: " + (err.message || err));
+      }
+    });
+
+    // Delete
+    document.getElementById("deleteBtn").addEventListener("click", async () => {
+      if (!confirm("Permanently delete this event?")) return;
+      try {
+        const res = await fetch(`${API_BASE}/events/${id}`, { method: "DELETE" });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Delete failed");
+        alert("Event deleted");
+        window.location.href = "events.html";
+      } catch (err) {
+        console.error(err);
+        alert("Delete failed: " + (err.message || err));
+      }
+    });
+
+    fetchEvent();
+  </script>
+</body>
+</html>

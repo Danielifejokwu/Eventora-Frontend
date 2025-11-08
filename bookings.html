@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings - Eventora</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- <script src="https://kit.fontawesome.com/your-fontawesome-key.js" crossorigin="anonymous"></script> -->
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">Eventora</div>
+      <ul>
+        <li><a href="events.html"><i class="fas fa-calendar-alt"></i> My Events</a></li>
+        <li><a href="reminders.html"><i class="fas fa-bell"></i> Reminders</a></li>
+        <li><a class="active" href="bookings.html"><i class="fas fa-ticket-alt"></i> Bookings</a></li>
+        <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </aside>
+
+<div class="content">
+  <div class="page-header">
+    <h2>My Bookings</h2>
+  </div>
+
+  <div class="card-grid">
+    <!-- Booking Card 1 -->
+    <div class="card">
+      <div class="card-body">
+        <h3>Tech Conference 2025</h3>
+        <p>📅 12 Oct 2025, 10:00 AM</p>
+        <p>📍 San Francisco</p>
+        <p>Status: <span class="status paid">Paid</span></p>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-secondary">Cancel</button>
+        <button class="btn btn-primary">View Details</button>
+      </div>
+    </div>
+
+    <!-- Booking Card 2 -->
+    <div class="card">
+      <div class="card-body">
+        <h3>Music Festival</h3>
+        <p>📅 22 Nov 2025, 5:00 PM</p>
+        <p>📍 New York</p>
+        <p>Status: <span class="status reserved">Reserved</span></p>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-secondary">Cancel</button>
+        <button class="btn btn-primary">View Details</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button class="btn btn-secondary">Prev</button>
+    <span>Page 1 of 2</span>
+    <button class="btn btn-secondary">Next</button>
+  </div>
+</div>
+
+ <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    const bookingsContainer = document.querySelector(".card-grid");
+    bookingsContainer.innerHTML = "<p>Loading your bookings...</p>";
+
+    try {
+      const res = await fetch("http://localhost:5000/api/bookings", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to load bookings (${res.status})`);
+      }
+
+      const bookings = await res.json();
+      bookingsContainer.innerHTML = "";
+
+      if (bookings.length === 0) {
+        bookingsContainer.innerHTML = "<p>You have no bookings yet.</p>";
+        return;
+      }
+
+      bookings.forEach(b => {
+        const event = b.eventId;
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.innerHTML = `
+          <div class="card-body">
+            <h3>${event?.title || "Unnamed Event"}</h3>
+            <p>📅 ${new Date(event?.dateTime).toLocaleString()}</p>
+            <p>📍 ${event?.location || "Unknown"}</p>
+            <p>Status: <span class="status ${b.status}">${b.status}</span></p>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-secondary" onclick="cancelBooking('${b._id}')">Cancel</button>
+            <button class="btn btn-primary">View Details</button>
+          </div>
+        `;
+        bookingsContainer.appendChild(card);
+      });
+    } catch (error) {
+      console.error(error);
+      bookingsContainer.innerHTML = "<p>Failed to load bookings.</p>";
+    }
+  });
+
+  async function cancelBooking(id) {
+    const token = localStorage.getItem("token");
+    if (!confirm("Are you sure you want to cancel this booking?")) return;
+    try {
+      const res = await fetch(`http://localhost:5000/api/bookings/${id}/cancel`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      if (res.ok) {
+        alert("Booking cancelled!");
+        location.reload();
+      } else {
+        alert("Failed to cancel booking");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error cancelling booking");
+    }
+  }
+</script>
+
+</body>
+</html>

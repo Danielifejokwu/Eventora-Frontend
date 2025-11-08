@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Reminders - Eventora</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- <script src="https://kit.fontawesome.com/your-fontawesome-key.js" crossorigin="anonymous"></script> -->
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">Eventora</div>
+      <ul>
+        <li><a href="events.html"><i class="fas fa-calendar-alt"></i> My Events</a></li>
+        <li><a class="active" href="reminders.html"><i class="fas fa-bell"></i> Reminders</a></li>
+        <li><a href="bookings.html"><i class="fas fa-ticket-alt"></i> Bookings</a></li>
+        <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content">
+  <div class="page-header">
+    <h2>My Reminders</h2>
+  </div>
+
+  <div class="card-grid">
+    <!-- Reminder Card 1 -->
+    <div class="card">
+      <div class="card-body">
+        <h3>Tech Conference 2025</h3>
+        <p>🔔 Reminder: 11 Oct 2025, 10:00 AM</p>
+        <p>Status: <span class="status sent">Sent</span></p>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-secondary">Delete</button>
+      </div>
+    </div>
+
+    <!-- Reminder Card 2 -->
+    <div class="card">
+      <div class="card-body">
+        <h3>Music Festival</h3>
+        <p>🔔 Reminder: 20 Nov 2025, 5:00 PM</p>
+        <p>Status: <span class="status pending">Pending</span></p>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-secondary">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button class="btn btn-secondary">Prev</button>
+    <span>Page 1 of 1</span>
+    <button class="btn btn-secondary">Next</button>
+  </div>
+</div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    const remindersContainer = document.querySelector(".card-grid");
+    remindersContainer.innerHTML = "<p>Loading reminders...</p>";
+
+    try {
+      const res = await fetch("http://localhost:5000/api/reminders", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to load reminders (${res.status})`);
+      }
+
+      const reminders = await res.json();
+      remindersContainer.innerHTML = "";
+
+      if (reminders.length === 0) {
+        remindersContainer.innerHTML = "<p>No reminders set.</p>";
+        return;
+      }
+
+      reminders.forEach(r => {
+        const event = r.eventId;
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.innerHTML = `
+          <div class="card-body">
+            <h3>${event?.title || "Unnamed Event"}</h3>
+            <p>📅 ${new Date(event?.dateTime).toLocaleString()}</p>
+            <p>📍 ${event?.location || "Unknown"}</p>
+            <p>Reminder Time: ${new Date(r.reminderTime).toLocaleString()}</p>
+            <p>Status: <span class="status ${r.status}">${r.status}</span></p>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-secondary" onclick="deleteReminder('${r._id}')">Delete</button>
+          </div>
+        `;
+        remindersContainer.appendChild(card);
+      });
+    } catch (error) {
+      console.error(error);
+      remindersContainer.innerHTML = "<p>Failed to load reminders.</p>";
+    }
+  });
+
+  async function deleteReminder(id) {
+    const token = localStorage.getItem("token");
+    if (!confirm("Delete this reminder?")) return;
+    try {
+      const res = await fetch(`http://localhost:5000/api/reminders/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      if (res.ok) {
+        alert("Reminder deleted!");
+        location.reload();
+      } else {
+        alert("Failed to delete reminder");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting reminder");
+    }
+  }
+</script>
+
+</body>
+</html>
