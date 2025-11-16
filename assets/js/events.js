@@ -1,8 +1,10 @@
+const API_BASE = getAPIUrl();
+
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("eventsContainer");
 
   try {
-    const response = await fetch("http://localhost:5000/api/events");
+    const response = await fetch(API_BASE);
     if (!response.ok) throw new Error("Failed to fetch events");
 
     const events = await response.json();

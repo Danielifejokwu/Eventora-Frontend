@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Event Details - Eventora</title>
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
+
 <body>
   <div class="dashboard-container">
     <aside class="sidebar">
@@ -33,21 +35,25 @@
 
         <h3>Edit Event</h3>
         <form id="editForm">
-          <label>Title<br /><input type="text" id="inputTitle" /></label><br/>
-          <label>Start Date (ISO)<br /><input type="text" id="inputStart" placeholder="2025-10-20T10:00:00Z" /></label><br/>
-          <label>End Date (ISO)<br /><input type="text" id="inputEnd" placeholder="2025-10-22T18:00:00Z" /></label><br/>
-          <label>Location<br /><input type="text" id="inputLocation" /></label><br/>
-          <label>Price<br /><input type="number" id="inputPrice" /></label><br/>
-          <label>Description<br /><textarea id="inputDesc"></textarea></label><br/>
+          <label>Title<br /><input type="text" id="inputTitle" /></label><br />
+          <label>Start Date (ISO)<br /><input type="text" id="inputStart"
+              placeholder="2025-10-20T10:00:00Z" /></label><br />
+          <label>End Date (ISO)<br /><input type="text" id="inputEnd"
+              placeholder="2025-10-22T18:00:00Z" /></label><br />
+          <label>Location<br /><input type="text" id="inputLocation" /></label><br />
+          <label>Price<br /><input type="number" id="inputPrice" /></label><br />
+          <label>Description<br /><textarea id="inputDesc"></textarea></label><br />
           <button id="saveBtn" type="button">Save Changes</button>
-          <button id="deleteBtn" type="button" style="margin-left:10px;background:#d9534f;color:#fff;">Delete Event</button>
+          <button id="deleteBtn" type="button" style="margin-left:10px;background:#d9534f;color:#fff;">Delete
+            Event</button>
         </form>
       </div>
     </main>
   </div>
+  <script src="assets/js/utils.js"></script>
 
   <script>
-    const API_BASE = "http://localhost:5000/api";
+    const API_BASE = getAPIUrl();
     const id = new URLSearchParams(window.location.search).get("id") || localStorage.getItem("selectedEventId");
     if (!id) {
       alert("No event selected");
@@ -125,4 +131,5 @@
     fetchEvent();
   </script>
 </body>
+
 </html>

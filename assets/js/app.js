@@ -1,5 +1,6 @@
+const API_BASE = getAPIUrl();
+
 document.addEventListener("DOMContentLoaded", () => {
-  const API_BASE = "http://localhost:5000/api"; // your backend base URL
 
   // ======== AUTH FUNCTIONS ======== //
   async function loginUser(email, password) {

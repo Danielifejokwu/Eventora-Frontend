@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,15 +8,16 @@
   <link rel="stylesheet" href="assets/css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
+
 <body>
   <div class="dashboard-container">
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo">Eventora</div>
       <ul>
-        <li><a href="bookings.html">Bookings</a></li>
+        <li><a class="active" href="events.html">My Events</a></li>
         <li><a href="reminders.html">Reminders</a></li>
-        <li><a class="active" href="events.html">Events</a></li>
+        <li><a href="bookings.html">Bookings</a></li>
         <li><a href="login.html">Logout</a></li>
       </ul>
     </aside>
@@ -31,14 +33,15 @@
       </div>
     </div>
   </div>
+  <script src="assets/js/utils.js"></script>
 
   <!-- JavaScript -->
   <script>
     const token = localStorage.getItem("token"); // Make sure login saves token
-
+    const API_BASE = getAPIUrl();
     async function loadEvents() {
       try {
-        const response = await fetch("http://localhost:5000/api/events", {
+        const response = await fetch(API_BASE, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
@@ -99,4 +102,5 @@
     loadEvents();
   </script>
 </body>
+
 </html>
