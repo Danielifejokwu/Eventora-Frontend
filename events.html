@@ -41,7 +41,7 @@
     const API_BASE = getAPIUrl();
     async function loadEvents() {
       try {
-        const response = await fetch(API_BASE, {
+        const response = await fetch(`${API_BASE}/api/events`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`

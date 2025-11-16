@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======== AUTH FUNCTIONS ======== //
   async function loginUser(email, password) {
     try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
+      const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function registerUser(name, email, password) {
     try {
-      const res = await fetch(`${API_BASE}/auth/register`, {
+      const res = await fetch(`${API_BASE}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password })

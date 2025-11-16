@@ -119,7 +119,7 @@ const API_BASE = getAPIUrl();
     const token = localStorage.getItem("token");
     if (!confirm("Delete this reminder?")) return;
     try {
-      const res = await fetch(API_BASE/$,{id}, {
+      const res = await fetch(`${API_BASE}/api/reminders/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("eventsContainer");
 
   try {
-    const response = await fetch(API_BASE);
+    const response = await fetch(`${API_BASE}/api/events`);
     if (!response.ok) throw new Error("Failed to fetch events");
 
     const events = await response.json();
